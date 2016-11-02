@@ -2,7 +2,7 @@
 using System;
 using System.ComponentModel;
 
-namespace Prestame.Models
+namespace Prestame.Interfaces
 {
     [Description("Lista de los Estados de Prestamos")]
     public enum PrestamoEstado

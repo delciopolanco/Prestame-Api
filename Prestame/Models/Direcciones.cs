@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Prestame.Models
+namespace Prestame.Interfaces
 {
     public class Direcciones
     {

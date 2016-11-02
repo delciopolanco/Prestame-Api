@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace Prestame.Models
+namespace Prestame.Interfaces
 {
     public class Prestamos : IEntity, IDisposable
     {

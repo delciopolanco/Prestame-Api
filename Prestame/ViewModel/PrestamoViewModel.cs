@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Prestame.Data;
-using Prestame.Models;
+using Prestame.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

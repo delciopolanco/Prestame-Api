@@ -1,7 +1,6 @@
 ﻿using System.Web.Http;
 using System.Web.Http.Description;
-using Prestame.Data;
-using Prestame.Models;
+using Prestame.Interfaces;
 using Prestame.Repositories;
 using Prestame.ViewModel;
 
@@ -9,14 +8,14 @@ namespace Prestame.Controllers
 {
     public class PrestamosController : ApiController
     {
-        private IDataRepository<PrestamoViewModel> _prestamosDB;
+        private IPrestamosRepository<PrestamoViewModel> _prestamosDB;
 
         public PrestamosController()
         {
             _prestamosDB = new PrestamoRepository();
         }
 
-        public PrestamosController(IDataRepository<PrestamoViewModel> repository)
+        public PrestamosController(IPrestamosRepository<PrestamoViewModel> repository)
         {
             _prestamosDB = repository;
         }
@@ -29,7 +28,7 @@ namespace Prestame.Controllers
             return Ok(json);
         }
 
-        // GET: api/Clientes/5
+        // GET: api/Prestamos/5
         [ResponseType(typeof(JsonResponse))]
         public IHttpActionResult GetById(int id)
         {
@@ -37,12 +36,21 @@ namespace Prestame.Controllers
             return Ok(json);
         }
 
-        // POST: api/Clientes
+        // POST: api/Prestamos
         [ResponseType(typeof(JsonResponse))]
         [HttpPost]
         public IHttpActionResult Post(PrestamoViewModel prestamo)
         {
             var json = _prestamosDB.Save(prestamo, ModelState);
+            return Ok(json);
+        }
+
+        // PUT: api/Prestamos
+        [ResponseType(typeof(JsonResponse))]
+        [HttpPut]
+        public IHttpActionResult Put(int id, PrestamoEstado estado)
+        {
+            var json = _prestamosDB.Update(id, estado);
             return Ok(json);
         }
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Prestame.Models;
+using Prestame.Interfaces;
 using System.Data.Entity;
 using Prestame.ViewModel;
 using Prestame.Data;
@@ -10,7 +10,7 @@ using System.Web.Http;
 
 namespace Prestame.Repositories
 {
-    public class PrestamoRepository : IDataRepository<PrestamoViewModel>, IDisposable
+    public class PrestamoRepository : IPrestamosRepository<PrestamoViewModel>, IDisposable
     {
         private PrestameContext _db;
         private JsonResponse json = new JsonResponse();
@@ -127,7 +127,7 @@ namespace Prestame.Repositories
             return json;
         }
 
-        public JsonResponse UpdateEstadoPrestamo(int id, PrestamoEstado estado)
+        public JsonResponse Update(int id, PrestamoEstado estado)
         {
             try
             {
@@ -159,21 +159,10 @@ namespace Prestame.Repositories
             return json;
         }
 
-        public JsonResponse Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Dispose()
         {
             _db.Dispose();
             GC.SuppressFinalize(this);
-        }
-
-
-        public JsonResponse Update(int id, PrestamoViewModel entity, ModelStateDictionary ModelState)
-        {
-            throw new NotImplementedException();
         }
     }
 }

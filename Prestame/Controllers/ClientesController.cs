@@ -1,7 +1,7 @@
 ﻿using System.Web.Http;
 using System.Web.Http.Description;
 using Prestame.Data;
-using Prestame.Models;
+using Prestame.Interfaces;
 
 namespace Prestame.Controllers.Clientes
 {
@@ -11,14 +11,14 @@ namespace Prestame.Controllers.Clientes
     public class ClientesController : ApiController
     {
 
-        private IDataRepository<ClienteViewModel> _clientDB;
+        private IClientesRepository<ClienteViewModel> _clientDB;
 
         public ClientesController()
         {
             _clientDB = new ClienteRepository();
         }
 
-        public ClientesController(IDataRepository<ClienteViewModel> repository)
+        public ClientesController(IClientesRepository<ClienteViewModel> repository)
         {
             _clientDB = repository;
         }

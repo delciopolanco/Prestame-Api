@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Prestame.Models;
+using Prestame.Interfaces;
 using System.Web.Http.ModelBinding;
 using System.Data.Entity;
 
@@ -9,7 +9,7 @@ namespace Prestame.Data
     ///<Summary>
     /// Gets the answer
     ///</Summary>
-    public class ClienteRepository : IDataRepository<ClienteViewModel>, IDisposable
+    public class ClienteRepository : IClientesRepository<ClienteViewModel>, IDisposable
     {
         private PrestameContext _db;
         private JsonResponse json = new JsonResponse();

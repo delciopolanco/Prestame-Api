@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using Prestame.Models;
+using Prestame.Interfaces;
 using System;
 using Prestame.Data;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
-namespace Prestame.Models
+namespace Prestame.Interfaces
 {
     public class ClienteViewModel : IEntity, IDisposable
     {
