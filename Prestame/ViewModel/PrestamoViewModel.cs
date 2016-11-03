@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace Prestame.ViewModel
+namespace Prestame.Helpers
 {
     public class PrestamoViewModel : IEntity, IDisposable
     {
@@ -22,13 +22,16 @@ namespace Prestame.ViewModel
         [Range(0, 9999999999999999.99, ErrorMessage = "* El Capital inical debe ser mayor a 0 y menor a 9999999999999999.99")]
         public decimal CapitalInicial { get; set; }
         public decimal? CapitalActual { get; set; }
-        public PrestamosEstados Estado { get; set; }
+        public int Estado { get; set; }
+        public string EstadoPrestamo { get; set; }
         public DateTime FechaDeCreacion { get; set; }
         public DateTime? FechaDeSaldo { get; set; }
 
         [Required(ErrorMessage = "* El cliente es Requerido")]
         public int ClienteId { get; set; }
         public ClienteViewModel Cliente { get; set; }
+
+        public string NombreCliente { get; set; }
         public void Dispose()
         {
             throw new NotImplementedException();

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Prestame.ViewModel;
+using Prestame.Helpers;
 using System.Web.Http.ModelBinding;
 using System.Data.Entity;
 using Prestame.Models;

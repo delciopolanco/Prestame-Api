@@ -2,7 +2,7 @@
 using System;
 using System.Web.Http.ModelBinding;
 
-namespace Prestame.ViewModel
+namespace Prestame.Helpers
 {
     public interface IPrestamosRepository<T> where T : IEntity, IDisposable
     {
@@ -10,7 +10,7 @@ namespace Prestame.ViewModel
 
         JsonResponse Get(int id);
 
-        JsonResponse Update(int id, PrestamosEstados estado);
+        JsonResponse Update(int id, PrestamosEstadosViewModel estado);
 
         JsonResponse Save(T entity, ModelStateDictionary ModelState);
     }

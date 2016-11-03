@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Prestame.ViewModel;
-using System.Data.Entity;
+using Prestame.Helpers;
 using Prestame.Data;
 using System.Web.Http.ModelBinding;
-using Prestame.Utils;
-using System.Web.Http;
 using Prestame.Models;
 
 namespace Prestame.Repositories
@@ -29,27 +26,37 @@ namespace Prestame.Repositories
         {
             try
             {
-                var _prestamos = (from cliente in _db.Cliente
-                                  from prestamos in _db.Prestamos
-                                  where cliente.Id == prestamos.ClienteId
-                                  select new PrestamoViewModel()
+                var _prestamos = (from c in _db.Cliente
+                                  join p in _db.Prestamos
+                                  on c.Id equals p.ClienteId
+                                  where c.Id == p.ClienteId
+                                  select new
                                   {
-                                      Cliente = new ClienteViewModel()
-                                      {
-                                          Id = cliente.Id,
-                                          Nombres = cliente.Nombres,
-                                          Apellidos = cliente.Apellidos,
-                                          Identificacion = cliente.Identificacion
-                                      },
-                                      Id = prestamos.Id,
-                                      CapitalActual = prestamos.CapitalActual,
-                                      CapitalInicial = prestamos.CapitalInicial,
-                                      InteresActual = prestamos.InteresActual,
-                                      InteresInicial = prestamos.InteresInicial,
-                                      FechaDeCreacion = prestamos.FechaDeCreacion,
-                                      FechaDeSaldo = prestamos.FechaDeSaldo,
-                                      Estado = prestamos.Estado
-                                  }).ToList();
+                                      p.Id,
+                                      p.CapitalActual,
+                                      p.CapitalInicial,
+                                      p.InteresActual,
+                                      p.InteresInicial,
+                                      p.FechaDeCreacion,
+                                      p.FechaDeSaldo,
+                                      p.ClienteId,
+                                      p.Estado,
+                                      c.Nombres,
+                                      c.Apellidos,
+                                      c.Identificacion
+                                  }).AsEnumerable()
+                                  .Select(prestamo => new PrestamoViewModel()
+                                  {
+                                      Id = prestamo.Id,
+                                      NombreCliente = prestamo.Nombres + ' ' + prestamo.Apellidos,
+                                      CapitalActual = prestamo.CapitalActual,
+                                      CapitalInicial = prestamo.CapitalInicial,
+                                      InteresActual = prestamo.InteresActual,
+                                      InteresInicial = prestamo.InteresInicial,
+                                      FechaDeCreacion = prestamo.FechaDeCreacion,
+                                      FechaDeSaldo = prestamo.FechaDeSaldo,
+                                      EstadoPrestamo = EnumHelper.GetEnumDescription((EstadosPrestamos)prestamo.Estado)
+                                  });
 
                 if (_prestamos != null)
                 {
@@ -127,7 +134,7 @@ namespace Prestame.Repositories
             return json;
         }
 
-        public JsonResponse Update(int id, PrestamosEstados estado)
+        public JsonResponse Update(int id, PrestamosEstadosViewModel estado)
         {
             try
             {
@@ -136,14 +143,14 @@ namespace Prestame.Repositories
                     var _prestamo = _db.Prestamos.Where(c => c.Id == id).FirstOrDefault();
                     if (_prestamo != null)
                     {
-                        _prestamo.Estado = estado;
+                        _prestamo.Estado = estado.Id;
 
                         _db.SaveChanges();
                         json.setMessage(_prestamo, JsonResponse.MessageType.Success);
                     }
                     else
                     {
-                        json.setMessage(new Error() { code = "003" , message = "No existe data con esa criteria"}, JsonResponse.MessageType.Error);
+                        json.setMessage(new Error() { code = "003", message = "No existe data con esa criteria" }, JsonResponse.MessageType.Error);
                     }
                 }
                 else

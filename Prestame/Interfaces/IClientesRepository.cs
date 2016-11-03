@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Http.ModelBinding;
 
-namespace Prestame.ViewModel
+namespace Prestame.Helpers
 {
     public interface IClientesRepository<T> where T : IEntity, IDisposable 
     {

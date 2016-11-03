@@ -28,7 +28,7 @@ namespace Prestame.Data
             }
             #endregion
 
-            #region "Adding some clientes"
+            #region "Adding Clientes"
 
             IList<Cliente> clientes = new List<Cliente>();
 
@@ -45,8 +45,6 @@ namespace Prestame.Data
                 }
             }
             #endregion
-
-
 
             base.Seed(context);
         }

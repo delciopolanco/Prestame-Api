@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 using Prestame.Models;
 
-namespace Prestame.ViewModel
+namespace Prestame.Helpers
 {
     public class ClienteViewModel : IEntity, IDisposable
     {

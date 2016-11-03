@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Prestame.ViewModel
+namespace Prestame.Helpers
 {
     public interface IEntity
     {

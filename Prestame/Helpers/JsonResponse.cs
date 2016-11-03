@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Http.ModelBinding;
 
-namespace Prestame.ViewModel
+namespace Prestame.Helpers
 {
     public class JsonResponse
     {

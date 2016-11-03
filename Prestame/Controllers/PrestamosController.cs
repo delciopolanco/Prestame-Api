@@ -1,6 +1,6 @@
 ﻿using System.Web.Http;
 using System.Web.Http.Description;
-using Prestame.ViewModel;
+using Prestame.Helpers;
 using Prestame.Repositories;
 using Prestame.Models;
 
@@ -47,7 +47,7 @@ namespace Prestame.Controllers
 
         // PUT: api/Prestamos
         [ResponseType(typeof(JsonResponse))]
-        public IHttpActionResult Put(int id, PrestamosEstados estado)
+        public IHttpActionResult Put(int id, PrestamosEstadosViewModel estado)
         {
             var json = _prestamosDB.Update(id, estado);
             return Ok(json);

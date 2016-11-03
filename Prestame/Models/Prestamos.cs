@@ -1,5 +1,5 @@
 ﻿using Prestame.Data;
-using Prestame.ViewModel;
+using Prestame.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,7 +23,7 @@ namespace Prestame.Models
         public decimal? CapitalActual { get; set; }
         [Required]
         public int ClienteId { get; set; }
-        public PrestamosEstados Estado { get; set; }
+        public int Estado { get; set; }
         [Required]
         public DateTime FechaDeCreacion { get; set; }
         public DateTime? FechaDeSaldo { get; set; }

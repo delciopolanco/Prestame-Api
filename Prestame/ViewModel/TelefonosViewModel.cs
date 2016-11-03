@@ -1,8 +1,8 @@
 ﻿using Prestame.Data;
-using Prestame.ViewModel;
+using Prestame.Helpers;
 using System;
 
-namespace Prestame.ViewModel
+namespace Prestame.Helpers
 {
     public class TelefonosViewModel : IEntity, IDisposable
     {
