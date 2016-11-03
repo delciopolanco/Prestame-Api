@@ -9,7 +9,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
-using Prestame.Interfaces;
+using Prestame.ViewModel;
 
 namespace Prestame.Providers
 {

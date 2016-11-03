@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Prestame.Data;
-using Prestame.Interfaces;
+using Prestame.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -22,7 +22,7 @@ namespace Prestame.ViewModel
         [Range(0, 9999999999999999.99, ErrorMessage = "* El Capital inical debe ser mayor a 0 y menor a 9999999999999999.99")]
         public decimal CapitalInicial { get; set; }
         public decimal? CapitalActual { get; set; }
-        public PrestamoEstado Estado { get; set; }
+        public PrestamosEstados Estado { get; set; }
         public DateTime FechaDeCreacion { get; set; }
         public DateTime? FechaDeSaldo { get; set; }
 

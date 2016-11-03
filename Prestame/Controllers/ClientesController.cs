@@ -1,7 +1,7 @@
 ﻿using System.Web.Http;
 using System.Web.Http.Description;
 using Prestame.Data;
-using Prestame.Interfaces;
+using Prestame.ViewModel;
 
 namespace Prestame.Controllers.Clientes
 {

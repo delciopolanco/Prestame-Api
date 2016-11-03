@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Prestame.Interfaces
+namespace Prestame.Models
 {
     public class TiposTelefono
     {

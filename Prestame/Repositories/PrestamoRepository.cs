@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
-using Prestame.Interfaces;
-using System.Data.Entity;
 using Prestame.ViewModel;
+using System.Data.Entity;
 using Prestame.Data;
 using System.Web.Http.ModelBinding;
 using Prestame.Utils;
 using System.Web.Http;
+using Prestame.Models;
 
 namespace Prestame.Repositories
 {
@@ -107,7 +107,7 @@ namespace Prestame.Repositories
                         InteresInicial = prestamo.InteresInicial,
                         FechaDeCreacion = DateTime.Now,
                         ClienteId = prestamo.ClienteId,
-                        Estado = PrestamoEstado.Activo
+                        Estado = prestamo.Estado
                     };
 
                     _db.Prestamos.Add(_prestamo);
@@ -127,11 +127,11 @@ namespace Prestame.Repositories
             return json;
         }
 
-        public JsonResponse Update(int id, PrestamoEstado estado)
+        public JsonResponse Update(int id, PrestamosEstados estado)
         {
             try
             {
-                if (id > 0 && estado > 0)
+                if (id > 0 && estado.Id > 0)
                 {
                     var _prestamo = _db.Prestamos.Where(c => c.Id == id).FirstOrDefault();
                     if (_prestamo != null)

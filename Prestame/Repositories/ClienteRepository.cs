@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
-using Prestame.Interfaces;
+using Prestame.ViewModel;
 using System.Web.Http.ModelBinding;
 using System.Data.Entity;
+using Prestame.Models;
 
 namespace Prestame.Data
 {

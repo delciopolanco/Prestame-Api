@@ -1,21 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Prestame.Data;
+using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Prestame.Models
 {
-    public class Telefonos
+    public class EstadosClientes
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
         [Required]
-        [StringLength(15)]
-        public string Telefono  { get; set; }
-
-        public int? TiposTelefonoId { get; set; }
-        public virtual TiposTelefono TiposTelefono { get; set; }
-
+        [StringLength(200)]
+        public string Estado { get; set; }
         public int? ClienteId { get; set; }
     }
 }

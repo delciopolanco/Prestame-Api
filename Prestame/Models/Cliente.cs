@@ -1,6 +1,5 @@
 ﻿using Prestame.Data;
-using Prestame.Interfaces;
-using Prestame.Interfaces;
+using Prestame.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace Prestame.Interfaces
+namespace Prestame.Models
 {
     public class Cliente : IEntity,IDisposable
     {

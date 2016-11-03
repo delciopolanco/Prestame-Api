@@ -1,4 +1,4 @@
-﻿using Prestame.Interfaces;
+﻿using Prestame.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -23,6 +23,8 @@ namespace Prestame.Data
         public DbSet<Telefonos> Telefonos { get; set; }
         public DbSet<TiposTelefono> TiposTelefono { get; set; }
         public DbSet<Prestamos> Prestamos { get; set; }
+        public DbSet<PrestamosEstados> EstadosPrestamos { get; set; }
+        public DbSet<EstadosClientes> EstadosClientes { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder mb)
         {

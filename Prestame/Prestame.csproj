@@ -280,8 +280,13 @@
     <Compile Include="Migrations\201611011701212_defaultValuePrestamos.Designer.cs">
       <DependentUpon>201611011701212_defaultValuePrestamos.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611031455165_FixinNamesSpaces.cs" />
+    <Compile Include="Migrations\201611031455165_FixinNamesSpaces.Designer.cs">
+      <DependentUpon>201611031455165_FixinNamesSpaces.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\Estados.cs" />
+    <Compile Include="Models\EstadosClientes.cs" />
+    <Compile Include="Models\EstadosPrestamos.cs" />
     <Compile Include="Models\Prestamos.cs" />
     <Compile Include="Repositories\PrestamoRepository.cs" />
     <Compile Include="Utils\Utils.cs" />
@@ -399,6 +404,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611011701212_defaultValuePrestamos.resx">
       <DependentUpon>201611011701212_defaultValuePrestamos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611031455165_FixinNamesSpaces.resx">
+      <DependentUpon>201611031455165_FixinNamesSpaces.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,8 +1,8 @@
-﻿using Prestame.Interfaces;
+﻿using Prestame.Models;
 using System;
 using System.Web.Http.ModelBinding;
 
-namespace Prestame.Interfaces
+namespace Prestame.ViewModel
 {
     public interface IPrestamosRepository<T> where T : IEntity, IDisposable
     {
@@ -10,7 +10,7 @@ namespace Prestame.Interfaces
 
         JsonResponse Get(int id);
 
-        JsonResponse Update(int id, PrestamoEstado estado);
+        JsonResponse Update(int id, PrestamosEstados estado);
 
         JsonResponse Save(T entity, ModelStateDictionary ModelState);
     }

@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-namespace Prestame.Interfaces
+namespace Prestame.Models
 {
     public class Prestamos : IEntity, IDisposable
     {
@@ -23,7 +23,7 @@ namespace Prestame.Interfaces
         public decimal? CapitalActual { get; set; }
         [Required]
         public int ClienteId { get; set; }
-        public PrestamoEstado Estado { get; set; }
+        public PrestamosEstados Estado { get; set; }
         [Required]
         public DateTime FechaDeCreacion { get; set; }
         public DateTime? FechaDeSaldo { get; set; }
