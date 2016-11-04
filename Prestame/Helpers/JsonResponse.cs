@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Http.ModelBinding;
 
-namespace Prestame.Helpers
+namespace Prestame.Interfaces
 {
     public class JsonResponse
     {
@@ -24,15 +24,22 @@ namespace Prestame.Helpers
 
         public void setMessage(object data, MessageType type, string customMessage = "")
         {
+            this.data = new object();
+
             if (type == MessageType.Success)
             {
                 this.data = data;
                 this.hasError = false;
                 this.message = this.GetMessage(MessageType.Success);
             }
+            else if (data is Error)
+            {
+                var error = (Error)data;
+                this.error.code = error.code ;
+                this.error.message = error.message;
+            }
             else
             {
-                this.data = new object();
                 this.hasError = true;
                 this.error.code = "003";
                 this.error.message = this.GetMessage(MessageType.Error);

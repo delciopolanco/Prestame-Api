@@ -1,5 +1,5 @@
 ﻿using Prestame.Data;
-using Prestame.Helpers;
+using Prestame.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,6 +28,7 @@ namespace Prestame.Models
         public DateTime FechaDeCreacion { get; set; }
         public DateTime? FechaDeSaldo { get; set; }
 
+        public virtual ICollection<Pagos> Pagos { get; set; }
 
         public void Dispose()
         {

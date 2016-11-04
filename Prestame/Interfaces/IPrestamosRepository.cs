@@ -2,7 +2,7 @@
 using System;
 using System.Web.Http.ModelBinding;
 
-namespace Prestame.Helpers
+namespace Prestame.Interfaces
 {
     public interface IPrestamosRepository<T> where T : IEntity, IDisposable
     {

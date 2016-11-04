@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Prestame.Helpers;
+using Prestame.Interfaces;
 using Prestame.Data;
 using System.Web.Http.ModelBinding;
 using Prestame.Models;
@@ -42,6 +42,7 @@ namespace Prestame.Repositories
                                       p.ClienteId,
                                       p.Estado,
                                       c.Nombres,
+
                                       c.Apellidos,
                                       c.Identificacion
                                   }).AsEnumerable()
@@ -141,21 +142,28 @@ namespace Prestame.Repositories
                 if (id > 0 && estado.Id > 0)
                 {
                     var _prestamo = _db.Prestamos.Where(c => c.Id == id).FirstOrDefault();
+
                     if (_prestamo != null)
                     {
                         _prestamo.Estado = estado.Id;
-
                         _db.SaveChanges();
-                        json.setMessage(_prestamo, JsonResponse.MessageType.Success);
+
+                        var prestamo = new PrestamoViewModel()
+                        {
+                            Id = _prestamo.Id,
+                            EstadoPrestamo = EnumHelper.GetEnumDescription((EstadosPrestamos)_prestamo.Estado)
+                        };
+
+                        json.setMessage(prestamo, JsonResponse.MessageType.Success);
                     }
                     else
                     {
-                        json.setMessage(new Error() { code = "003", message = "No existe data con esa criteria" }, JsonResponse.MessageType.Error);
+                        json.setMessage(new Error() { code = "003", message = "Prestamo no existe" }, JsonResponse.MessageType.Error);
                     }
                 }
                 else
                 {
-                    json.setMessage(new Error() { code = "003", message = "El valor enviado es invalido" }, JsonResponse.MessageType.Error);
+                    json.setMessage(new Error() { code = "004", message = "No cumple con el contrato" }, JsonResponse.MessageType.Error);
                 }
             }
             catch (Exception ex)

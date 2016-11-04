@@ -9,7 +9,7 @@ using Microsoft.Owin.Security.Google;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using Prestame.Providers;
-using Prestame.Helpers;
+using Prestame.Interfaces;
 
 namespace Prestame
 {

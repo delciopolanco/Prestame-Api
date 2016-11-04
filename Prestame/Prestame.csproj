@@ -247,6 +247,7 @@
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Data\PrestameExceptions.cs" />
     <Compile Include="Interfaces\IEntity.cs" />
+    <Compile Include="Interfaces\IPagosRepository.cs" />
     <Compile Include="Interfaces\IPrestamosRepository.cs" />
     <Compile Include="Migrations\201610300345490_init database.cs" />
     <Compile Include="Migrations\201610300345490_init database.Designer.cs">
@@ -294,9 +295,12 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Estados.cs" />
+    <Compile Include="Models\Pagos.cs" />
     <Compile Include="Models\Prestamos.cs" />
+    <Compile Include="Repositories\PagosRepository.cs" />
     <Compile Include="Repositories\PrestamoRepository.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
+    <Compile Include="ViewModel\PagosViewModel.cs" />
     <Compile Include="ViewModel\PrestamosEstadosViewModel.cs" />
     <Compile Include="ViewModel\PrestamoViewModel.cs" />
     <Compile Include="ViewModel\TelefonosViewModel.cs" />

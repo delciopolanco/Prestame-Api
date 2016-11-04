@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Prestame.Helpers
+namespace Prestame.Interfaces
 {
     // Models returned by AccountController actions.
 

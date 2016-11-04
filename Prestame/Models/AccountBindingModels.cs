@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
-namespace Prestame.Helpers
+namespace Prestame.Interfaces
 {
     // Models used as parameters to AccountController actions.
 

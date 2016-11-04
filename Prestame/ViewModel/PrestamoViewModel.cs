@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace Prestame.Helpers
+namespace Prestame.Interfaces
 {
     public class PrestamoViewModel : IEntity, IDisposable
     {
