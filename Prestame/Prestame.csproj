@@ -243,6 +243,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ClientesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PagosController.cs" />
     <Compile Include="Controllers\PrestamosController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Data\PrestameExceptions.cs" />
@@ -292,6 +293,10 @@
     <Compile Include="Migrations\201611032117377_Deleting Estados and Fixing tables.cs" />
     <Compile Include="Migrations\201611032117377_Deleting Estados and Fixing tables.Designer.cs">
       <DependentUpon>201611032117377_Deleting Estados and Fixing tables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611050028045_Create Pagos and Fixing tables.cs" />
+    <Compile Include="Migrations\201611050028045_Create Pagos and Fixing tables.Designer.cs">
+      <DependentUpon>201611050028045_Create Pagos and Fixing tables.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Estados.cs" />
@@ -425,6 +430,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611032117377_Deleting Estados and Fixing tables.resx">
       <DependentUpon>201611032117377_Deleting Estados and Fixing tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611050028045_Create Pagos and Fixing tables.resx">
+      <DependentUpon>201611050028045_Create Pagos and Fixing tables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

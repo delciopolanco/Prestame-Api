@@ -29,5 +29,7 @@ namespace Prestame.Interfaces
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<Prestame.Models.Pagos> Pagos { get; set; }
     }
 }

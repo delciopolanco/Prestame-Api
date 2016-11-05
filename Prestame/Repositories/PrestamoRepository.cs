@@ -57,16 +57,11 @@ namespace Prestame.Repositories
                                       FechaDeCreacion = prestamo.FechaDeCreacion,
                                       FechaDeSaldo = prestamo.FechaDeSaldo,
                                       EstadoPrestamo = EnumHelper.GetEnumDescription((EstadosPrestamos)prestamo.Estado)
-                                  });
+                                  }).ToList();
 
-                if (_prestamos != null)
-                {
-                    json.setMessage(_prestamos, JsonResponse.MessageType.Success);
-                }
-                else
-                {
-                    json.setMessage(_prestamos, JsonResponse.MessageType.Error, "No existen clientes registrados.");
-                }
+                var message = (_prestamos != null ? null : "No existen prestamos registrados.");
+
+                json.setMessage(_prestamos, JsonResponse.MessageType.Success, message);
             }
             catch (Exception ex)
             {
@@ -139,7 +134,7 @@ namespace Prestame.Repositories
         {
             try
             {
-                if (id > 0 && estado.Id > 0)
+                if (id > 0 && estado != null)
                 {
                     var _prestamo = _db.Prestamos.Where(c => c.Id == id).FirstOrDefault();
 

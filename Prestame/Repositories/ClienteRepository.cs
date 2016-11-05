@@ -54,14 +54,9 @@ namespace Prestame.Data
                                      }).ToList()
                                  }).ToList();
 
-                if (_clientes != null)
-                {
-                    json.setMessage(_clientes, JsonResponse.MessageType.Success);
-                }
-                else
-                {
-                    json.setMessage(_clientes, JsonResponse.MessageType.Error, "No existen clientes registrados.");
-                }
+                var message = (_clientes != null ? "No existen clientes registrados." : null);
+
+                json.setMessage(_clientes, JsonResponse.MessageType.Error, message);
             }
             catch (Exception ex)
             {
