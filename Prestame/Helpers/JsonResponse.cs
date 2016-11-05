@@ -11,10 +11,10 @@ namespace Prestame.Interfaces
     {
         public JsonResponse()
         {
-            this.error = new Error();
-            this.data = new object();
-            this.message = string.Empty;
-            this.hasError = false;
+            error = new Error();
+            data = new object();
+            message = string.Empty;
+            hasError = false;
         }
 
         public object data { get; set; }
@@ -22,37 +22,46 @@ namespace Prestame.Interfaces
         public string message { get; set; }
         public Error error { get; set; }
 
-        public void setMessage(object data, MessageType type, string customMessage = "")
+        public void setMessage(object dataJson, MessageType type, string customMessage = "")
         {
-            this.data = new object();
 
             if (type == MessageType.Success)
             {
-                this.data = data;
-                this.hasError = false;
-                this.message = this.GetMessage(MessageType.Success);
+                data = dataJson != null ? dataJson : new object();
+                hasError = false;
+                message = (!string.IsNullOrEmpty(customMessage) ? customMessage : GetMessage(MessageType.Success));
             }
             else if (data is Error)
             {
-                var error = (Error)data;
-                this.error.code = error.code ;
-                this.error.message = error.message;
+                var error = (Error)dataJson;
+                error.code = error.code;
+                error.message = (!string.IsNullOrEmpty(customMessage) ? customMessage : error.message);
             }
             else
             {
                 this.hasError = true;
                 this.error.code = "003";
-                this.error.message = this.GetMessage(MessageType.Error);
+                this.error.message = (!string.IsNullOrEmpty(customMessage) ? customMessage : GetMessage(MessageType.Error));
             }
-
         }
 
         public void setMessage(ModelStateDictionary errors, MessageType type, string customMessage = "")
         {
-            string messages = string.Join(", ", errors.Values
-                                                      .SelectMany(x => x.Errors)
-                                                      .Select(x => x.ErrorMessage));
-            setMessage(messages, MessageType.Error, customMessage);
+            string messages = string.Join(", ", errors.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage));
+
+            if (string.IsNullOrEmpty(messages))
+            {
+                messages = string.Join(", ", errors.Values.SelectMany(x => x.Errors).Select(x => x.Exception.Message));
+
+                if (messages is String)
+                {
+                    //messages = string.Join("''", message.Substring(message.IndexOf("'") + 1, message.IndexOf("'") - message.Length - 1));
+                    //TODO
+                    messages = "No Cumple con el contrato";
+                }
+            }
+
+            setMessage(new object(), MessageType.Error, messages);
         }
 
         public enum MessageType

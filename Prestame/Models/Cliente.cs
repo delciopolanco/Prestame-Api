@@ -29,6 +29,7 @@ namespace Prestame.Models
 
         public virtual ICollection<Prestamos> Prestamos { get; set; }
 
+        public virtual ICollection<Pagos> Pagos { get; set; }
         public void Dispose()
         {
             throw new NotImplementedException();

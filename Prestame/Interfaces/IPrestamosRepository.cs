@@ -13,5 +13,7 @@ namespace Prestame.Interfaces
         JsonResponse Update(int id, PrestamosEstadosViewModel estado);
 
         JsonResponse Save(T entity, ModelStateDictionary ModelState);
+
+        void Dispose();
     }
 }

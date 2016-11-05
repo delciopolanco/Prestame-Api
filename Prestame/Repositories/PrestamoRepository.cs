@@ -27,26 +27,24 @@ namespace Prestame.Repositories
         {
             try
             {
-                var _prestamos = (from c in _db.Cliente
-                                  join p in _db.Prestamos
-                                  on c.Id equals p.ClienteId
-                                  where c.Id == p.ClienteId
-                                  select new
-                                  {
-                                      p.Id,
-                                      p.CapitalActual,
-                                      p.CapitalInicial,
-                                      p.InteresActual,
-                                      p.InteresInicial,
-                                      p.FechaDeCreacion,
-                                      p.FechaDeSaldo,
-                                      p.ClienteId,
-                                      p.Estado,
-                                      c.Nombres,
+                var prestamos = (from c in _db.Cliente
+                                 join p in _db.Prestamos
+                                 on c.Id equals p.ClienteId
+                                 where c.Id == p.ClienteId
+                                 select new
+                                 {
+                                     p.Id,
+                                     p.CapitalActual,
+                                     p.CapitalInicial,
+                                     p.InteresActual,
+                                     p.InteresInicial,
+                                     p.FechaDeCreacion,
+                                     p.FechaDeSaldo,
+                                     p.Estado,
+                                     c.Nombres,
+                                     c.Apellidos
 
-                                      c.Apellidos,
-                                      c.Identificacion
-                                  }).AsEnumerable()
+                                 }).AsEnumerable()
                                   .Select(prestamo => new PrestamoViewModel()
                                   {
                                       Id = prestamo.Id,
@@ -60,9 +58,8 @@ namespace Prestame.Repositories
                                       EstadoPrestamo = EnumHelper.GetEnumDescription((EstadosPrestamos)prestamo.Estado)
                                   }).ToList();
 
-                var message = (_prestamos != null ? null : "No existen prestamos registrados.");
-
-                json.setMessage(_prestamos, JsonResponse.MessageType.Success, message);
+                var message = (prestamos.Count > 0 ? null : "No existen prestamos registrados.");
+                json.setMessage(prestamos, JsonResponse.MessageType.Success, message);
             }
             catch (Exception ex)
             {
@@ -76,16 +73,15 @@ namespace Prestame.Repositories
         {
             try
             {
-                var _prestame = _db.Prestamos
-                                  .Where(p => p.Id == id).FirstOrDefault();
+                var prestamo = _db.Prestamos.Where(p => p.Id == id).FirstOrDefault();
 
-                if (_prestame != null)
+                if (prestamo != null)
                 {
-                    json.setMessage(_prestame, JsonResponse.MessageType.Success);
+                    json.setMessage(prestamo, JsonResponse.MessageType.Success);
                 }
                 else
                 {
-                    json.setMessage(_prestame, JsonResponse.MessageType.Error, "El prestamo no existe.");
+                    json.setMessage(prestamo, JsonResponse.MessageType.Success, "El prestamo no existe.");
                 }
 
             }
@@ -97,26 +93,26 @@ namespace Prestame.Repositories
             return json;
         }
 
-        public JsonResponse Save(PrestamoViewModel prestamo, ModelStateDictionary ModelState)
+        public JsonResponse Save(PrestamoViewModel prestamoViewModel, ModelStateDictionary ModelState)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var _prestamo = new Prestamos()
+                    var prestamo = new Prestamos()
                     {
-                        CapitalActual = prestamo.CapitalInicial,
-                        CapitalInicial = prestamo.CapitalInicial,
-                        InteresActual = prestamo.InteresInicial,
-                        InteresInicial = prestamo.InteresInicial,
+                        CapitalActual = prestamoViewModel.CapitalInicial,
+                        CapitalInicial = prestamoViewModel.CapitalInicial,
+                        InteresActual = prestamoViewModel.InteresInicial,
+                        InteresInicial = prestamoViewModel.InteresInicial,
                         FechaDeCreacion = DateTime.Now,
-                        ClienteId = prestamo.ClienteId,
-                        Estado = prestamo.Estado
+                        ClienteId = prestamoViewModel.ClienteId,
+                        Estado = (int)EstadosPrestamos.AlDía
                     };
 
-                    _db.Prestamos.Add(_prestamo);
+                    _db.Prestamos.Add(prestamo);
                     _db.SaveChanges();
-                    json.setMessage(_prestamo, JsonResponse.MessageType.Success);
+                    json.setMessage(prestamo, JsonResponse.MessageType.Success);
                 }
                 else
                 {

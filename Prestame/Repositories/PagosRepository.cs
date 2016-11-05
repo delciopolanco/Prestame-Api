@@ -5,7 +5,7 @@ using Prestame.Data;
 using System.Web.Http.ModelBinding;
 using Prestame.Models;
 using Prestame.ViewModel;
-
+using System.Data.Entity;
 
 namespace Prestame.Repositories
 {
@@ -27,36 +27,38 @@ namespace Prestame.Repositories
         {
             try
             {
-                var _pagos = (from c in _db.Cliente
-                              join pe in _db.Prestamos
-                              on c.Id equals pe.ClienteId
-                              join pa in _db.Pagos
-                              on pe.Id equals pa.PrestamoId
-                              where c.Id == pe.ClienteId
-                              select new
-                              {
-                                  pa.Id,
-                                  pa.Interes,
-                                  pa.Capital,
-                                  pa.FechaPago,
-                                  pa.Tasa,
-                                  PrestamoId = pe.Id,
-                                  NombreCompleto = String.Format("{0} {1}", c.Nombres, c.Apellidos)
+                var pagos = (from c in _db.Cliente
+                             join pe in _db.Prestamos
+                             on c.Id equals pe.ClienteId
+                             join pa in _db.Pagos
+                             on pe.Id equals pa.PrestamoId
+                             where c.Id == pe.ClienteId
+                             select new
+                             {
+                                 pa.Id,
+                                 pa.Interes,
+                                 pa.Capital,
+                                 pa.FechaPago,
+                                 pa.Tasa,
+                                 pa.Monto,
+                                 PrestamoId = pe.Id,
+                                 c.Nombres,
+                                 c.Apellidos
 
-                              }).AsEnumerable().Select(pago => new PagosViewModel()
-                              {
-                                  Id = pago.Id,
-                                  NombreCliente = pago.NombreCompleto,
-                                  Capital = pago.Capital,
-                                  Interes = pago.Interes,
-                                  Tasa = pago.Tasa,
-                                  FechaPago = pago.FechaPago,
-                                  PrestamoId = pago.PrestamoId
-                              }).ToList();;
+                             }).AsEnumerable().Select(pago => new PagosViewModel()
+                             {
+                                 Id = pago.Id,
+                                 NombreCliente = string.Format("{0} {1}", pago.Nombres, pago.Apellidos),
+                                 Monto = pago.Monto,
+                                 Capital = pago.Capital,
+                                 Interes = pago.Interes,
+                                 Tasa = pago.Tasa,
+                                 FechaPago = pago.FechaPago,
+                                 PrestamoId = pago.PrestamoId
+                             }).ToList();
 
-                var message = (_pagos != null ? null : "No existen prestamos registrados.");
-
-                json.setMessage(_pagos, JsonResponse.MessageType.Success, message);
+                var message = (pagos.Count > 0 ? null : "No existen pagos registrados.");
+                json.setMessage(pagos, JsonResponse.MessageType.Success, message);
             }
             catch (Exception ex)
             {
@@ -84,6 +86,57 @@ namespace Prestame.Repositories
             return json;
         }
 
+        public JsonResponse GetClientPagos(int idClient)
+        {
+
+            try
+            {
+                var pagos = (from c in _db.Cliente
+                             join pe in _db.Prestamos
+                             on c.Id equals pe.ClienteId
+                             join pa in _db.Pagos
+                             on pe.Id equals pa.PrestamoId
+                             where c.Id == idClient
+                             select new
+                             {
+                                 pa.Id,
+                                 pa.Interes,
+                                 pa.Capital,
+                                 pa.FechaPago,
+                                 pa.Tasa,
+                                 pa.Monto,
+                                 PrestamoId = pe.Id,
+                                 c.Nombres,
+                                 c.Apellidos
+
+                             }).AsEnumerable().Select(pago => new PagosViewModel()
+                             {
+                                 Id = pago.Id,
+                                 NombreCliente = string.Format("{0} {1}", pago.Nombres, pago.Apellidos),
+                                 Monto = pago.Monto,
+                                 Capital = pago.Capital,
+                                 Interes = pago.Interes,
+                                 Tasa = pago.Tasa,
+                                 FechaPago = pago.FechaPago
+                             }).ToList();
+
+                if (pagos != null)
+                {
+                    json.setMessage(pagos, JsonResponse.MessageType.Success);
+                }
+                else
+                {
+                    json.setMessage(new object(), JsonResponse.MessageType.Error, "El cliente no posee pagos.");
+                }
+            }
+            catch (Exception ex)
+            {
+                PrestameExceptions.HandleException(ex, json);
+            }
+
+            return json;
+        }
+
         public JsonResponse Save(PagosViewModel pagoViewModel, ModelStateDictionary modelState)
         {
 
@@ -93,19 +146,19 @@ namespace Prestame.Repositories
                 {
                     if (modelState.IsValid)
                     {
-                        var prestamo = _db.Prestamos.Where(p => p.Id == pagoViewModel.Id).FirstOrDefault();
+                        var prestamo = _db.Prestamos.Where(p => p.Id == pagoViewModel.PrestamoId).FirstOrDefault();
                         if (prestamo == null)
                         {
-                            json.setMessage(pagoViewModel, JsonResponse.MessageType.Success, "No existe el prestamo.");
+                            json.setMessage(new object(), JsonResponse.MessageType.Error, "No existe el prestamo.");
                             return json;
                         }
 
 
-                        var montoPago = GetMontoPago(prestamo.CapitalActual, prestamo.InteresActual, pagoViewModel.MontoTotal);
+                        var montoPago = GetMontoPago(prestamo.CapitalActual, prestamo.InteresActual, pagoViewModel.Monto);
 
                         var pago = new Pagos()
                         {
-                            Monto = pagoViewModel.MontoTotal,
+                            Monto = pagoViewModel.Monto,
                             Tasa = prestamo.InteresActual,
                             Interes = montoPago.Interes,
                             Capital = montoPago.Capital,
@@ -157,7 +210,8 @@ namespace Prestame.Repositories
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _db.Dispose();
+            GC.SuppressFinalize(this);
         }
 
     }

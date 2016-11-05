@@ -14,7 +14,7 @@ namespace Prestame.Interfaces
         public int Id { get; set; }
 
         [Required(ErrorMessage = "* Interes inicial es Requerido")]
-        [Range(0, 9999999999999999.99, ErrorMessage = "* El Interes inical debe ser mayor a 0 y menor a 9999999999999999.99")]
+        [Range(0.01, 999 , ErrorMessage = "* Interes inicial debe ser mayor a 0.01 y menor a 999")]
         public decimal InteresInicial { get; set; }
         public decimal? InteresActual { get; set; }
 

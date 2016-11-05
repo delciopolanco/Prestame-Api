@@ -4,6 +4,7 @@ using Prestame.Interfaces;
 using System.Web.Http.ModelBinding;
 using System.Data.Entity;
 using Prestame.Models;
+using System.Collections.Generic;
 
 namespace Prestame.Data
 {
@@ -25,38 +26,31 @@ namespace Prestame.Data
             _db = new PrestameContext();
         }
 
-        public void Dispose()
-        {
-            _db.Dispose();
-            GC.SuppressFinalize(this);
-        }
-
         public JsonResponse Get()
         {
             try
             {
-                var _clientes = _db.Cliente
+                var clientes = _db.Cliente
                                     .Include(p => p.Telefonos)
                                     .Include(p => p.Direcciones)
                                     .Select(c => new ClienteViewModel()
-                                 {
-                                     Id = c.Id,
-                                     Nombres = c.Nombres,
-                                     Apellidos = c.Apellidos,
-                                     Identificacion = c.Identificacion,
-                                     Direcciones = c.Direcciones,
-                                     Telefonos = c.Telefonos.Select(t => new TelefonosViewModel()
-                                     {
-                                         Id = t.TiposTelefonoId,
-                                         Telefono = t.Telefono,
-                                         TiposTelefonoId = t.TiposTelefonoId,
-                                         TiposTelefono = t.TiposTelefono.TipoTelefono
-                                     }).ToList()
-                                 }).ToList();
+                                    {
+                                        Id = c.Id,
+                                        Nombres = c.Nombres,
+                                        Apellidos = c.Apellidos,
+                                        Identificacion = c.Identificacion,
+                                        Direcciones = c.Direcciones,
+                                        Telefonos = c.Telefonos.Select(t => new TelefonosViewModel()
+                                        {
+                                            Id = t.TiposTelefonoId,
+                                            Telefono = t.Telefono,
+                                            TiposTelefonoId = t.TiposTelefonoId,
+                                            TiposTelefono = t.TiposTelefono.TipoTelefono
+                                        }).ToList()
+                                    }).ToList();
 
-                var message = (_clientes != null ? "No existen clientes registrados." : null);
-
-                json.setMessage(_clientes, JsonResponse.MessageType.Error, message);
+                var message = (clientes.Count > 0 ? null : "No existen Clientes registrados.");
+                json.setMessage(clientes, JsonResponse.MessageType.Success, message);
             }
             catch (Exception ex)
             {
@@ -70,18 +64,18 @@ namespace Prestame.Data
         {
             try
             {
-                var _cliente = _db.Cliente
+                var cliente = _db.Cliente
                                   .Include(p => p.Telefonos)
                                   .Include(p => p.Direcciones)
                                   .Where(c => c.Id == id).FirstOrDefault();
 
-                if (_cliente != null)
+                if (cliente != null)
                 {
-                    json.setMessage(_cliente, JsonResponse.MessageType.Success);
+                    json.setMessage(cliente, JsonResponse.MessageType.Success);
                 }
                 else
                 {
-                    json.setMessage(_cliente, JsonResponse.MessageType.Error, "El cliente no existe.");
+                    json.setMessage(cliente, JsonResponse.MessageType.Error, "El cliente no existe.");
                 }
 
             }
@@ -93,26 +87,34 @@ namespace Prestame.Data
             return json;
         }
 
-        public JsonResponse Save(ClienteViewModel cliente, ModelStateDictionary ModelState)
+        public JsonResponse Save(ClienteViewModel clienteViewModel, ModelStateDictionary ModelState)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var _cliente = new Cliente()
+                    var cliente = new Cliente()
                     {
-                        Nombres = cliente.Nombres,
-                        Apellidos = cliente.Apellidos,
-                        Identificacion = cliente.Identificacion,
-                        Direcciones = cliente.Direcciones,
-                        Telefonos = cliente.Telefonos.Select(t => new Telefonos()
+                        Nombres = clienteViewModel.Nombres,
+                        Apellidos = clienteViewModel.Apellidos,
+                        Identificacion = clienteViewModel.Identificacion,
+                        Direcciones = new List<Direcciones>(),
+                        Telefonos = new List<Telefonos>(),
+                        Prestamos = new List<Prestamos>()
+                    };
+
+                    if (clienteViewModel.Direcciones != null)
+                        cliente.Direcciones = clienteViewModel.Direcciones;
+                    if (clienteViewModel.Telefonos != null)
+                    {
+                        cliente.Telefonos = clienteViewModel.Telefonos.Select(t => new Telefonos()
                         {
                             Telefono = t.Telefono,
                             TiposTelefonoId = t.TiposTelefonoId
-                        }).ToList()
-                    };
+                        }).ToList();
+                    }
 
-                    _db.Cliente.Add(_cliente);
+                    _db.Cliente.Add(cliente);
                     _db.SaveChanges();
                     json.setMessage(cliente, JsonResponse.MessageType.Success);
                 }
@@ -129,25 +131,25 @@ namespace Prestame.Data
             return json;
         }
 
-        public JsonResponse Update(int id, ClienteViewModel cliente, ModelStateDictionary ModelState)
+        public JsonResponse Update(int id, ClienteViewModel clienteViewModel, ModelStateDictionary ModelState)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var _cliente = _db.Cliente.Where(c => c.Id == id).FirstOrDefault();
-                    if (_cliente.Id > 0)
+                    var cliente = _db.Cliente.Where(c => c.Id == id).FirstOrDefault();
+                    if (cliente != null)
                     {
-                        _cliente.Nombres = cliente.Nombres;
-                        _cliente.Apellidos = cliente.Apellidos;
-                        _cliente.Identificacion = cliente.Identificacion;
+                        cliente.Nombres = clienteViewModel.Nombres;
+                        cliente.Apellidos = clienteViewModel.Apellidos;
+                        cliente.Identificacion = clienteViewModel.Identificacion;
 
                         _db.SaveChanges();
                         json.setMessage(cliente, JsonResponse.MessageType.Success);
                     }
                     else
                     {
-                        json.setMessage(ModelState, JsonResponse.MessageType.Error);
+                        json.setMessage(new object(), JsonResponse.MessageType.Error, "Cliente no existe");
                     }
                 }
                 else
@@ -169,27 +171,26 @@ namespace Prestame.Data
             {
                 try
                 {
-                    var _cliente = _db.Cliente
+                    var cliente = _db.Cliente
                                     .Include(p => p.Telefonos)
                                     .Include(p => p.Direcciones)
                                     .Where(c => c.Id == id).FirstOrDefault();
 
-                    var _direcciones = _cliente.Direcciones;
-                    var _telefonos = _cliente.Telefonos;
-
-                    if (_cliente != null)
+                    if (cliente != null)
                     {
-                        if (_direcciones != null) _db.Direcciones.RemoveRange(_direcciones);
-                        if (_telefonos != null) _db.Telefonos.RemoveRange(_telefonos);
-                        _db.Cliente.Remove(_cliente);
 
+                        if (cliente.Direcciones != null) _db.Direcciones.RemoveRange(cliente.Direcciones);
+                        if (cliente.Telefonos != null) _db.Telefonos.RemoveRange(cliente.Telefonos);
+
+                        _db.Cliente.Remove(cliente);
                         _db.SaveChanges();
+
                         transaction.Commit();
-                        json.setMessage(_cliente, JsonResponse.MessageType.Success);
+                        json.setMessage(cliente, JsonResponse.MessageType.Success);
                     }
                     else
                     {
-                        json.setMessage(new Error() { code = "004", message = "La entidad a eliminar no existe." }, JsonResponse.MessageType.Error);
+                        json.setMessage(cliente, JsonResponse.MessageType.Error, "El cliente no existe.");
                         transaction.Rollback();
                     }
                 }
@@ -201,6 +202,12 @@ namespace Prestame.Data
             }
 
             return json;
+        }
+
+        public void Dispose()
+        {
+            _db.Dispose();
+            GC.SuppressFinalize(this);
         }
 
     }
