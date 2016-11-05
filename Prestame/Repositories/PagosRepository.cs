@@ -72,10 +72,10 @@ namespace Prestame.Repositories
         {
             try
             {
-                var _pagos = _db.Pagos.Where(p => p.Id == id).FirstOrDefault();
-                var message = (_pagos != null ? "No existe el pago." : null);
+                var pago = _db.Pagos.Where(p => p.Id == id).FirstOrDefault();
+                var message = (pago != null ? null : "No existe el pago.");
 
-                json.setMessage(_pagos, JsonResponse.MessageType.Success, message);
+                json.setMessage(pago, JsonResponse.MessageType.Success, message);
 
             }
             catch (Exception ex)
