@@ -4,6 +4,7 @@ using Prestame.Interfaces;
 using Prestame.Data;
 using System.Web.Http.ModelBinding;
 using Prestame.Models;
+using static Prestame.Models.Estados;
 
 namespace Prestame.Repositories
 {

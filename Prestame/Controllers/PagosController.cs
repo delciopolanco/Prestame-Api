@@ -10,12 +10,13 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Prestame.Interfaces;
 using Prestame.Models;
+using Prestame.ViewModel;
 
 namespace Prestame.Controllers
 {
     public class PagosController : ApiController
     {
-        /*private IPagosRepository<Pagos> _dbPagos;
+        private IPagosRepository<PagosViewModel> _dbPagos;
 
         // GET: api/Pagos
         public JsonResponse GetPagos()
@@ -26,18 +27,13 @@ namespace Prestame.Controllers
 
         // GET: api/Pagos/5
         [ResponseType(typeof(Pagos))]
-        public IHttpActionResult GetPagos(int id)
+        public JsonResponse GetPagos(int id)
         {
-            Pagos pagos = _dbPagos.Pagos.Find(id);
-            if (pagos == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(pagos);
+            var json = _dbPagos.Get(id);
+            return json;
         }
 
-       
+      /* 
         // POST: api/Pagos
         [ResponseType(typeof(Pagos))]
         public IHttpActionResult PostPagos(Pagos pagos)
