@@ -22,6 +22,7 @@ namespace Prestame.Controllers
 
         // GET: api/Prestamos
         [ResponseType(typeof(JsonResponse))]
+        [ActionName("DefaultAction")]
         public IHttpActionResult Get()
         {
             var json = _prestamosDB.Get();
@@ -30,10 +31,20 @@ namespace Prestame.Controllers
 
         // GET: api/Prestamos/5
         [ResponseType(typeof(JsonResponse))]
+        [ActionName("DefaultAction")]
         public IHttpActionResult GetById(int id)
         {
             var json = _prestamosDB.Get(id);
             return Ok(json);
+        }
+
+        // GET: api/Pagos/GetPrestamosByClient/5
+        [ResponseType(typeof(JsonResponse))]
+        [ActionName("GetPrestamosByClient")]
+        public JsonResponse GetPrestamosByClient(int id)
+        {
+            var json = _prestamosDB.GetPrestamosByClient(id);
+            return json;
         }
 
         // POST: api/Prestamos

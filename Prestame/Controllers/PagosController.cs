@@ -31,6 +31,8 @@ namespace Prestame.Controllers
         }
 
         // GET: api/Pagos
+        [ResponseType(typeof(JsonResponse))]
+        [ActionName("DefaultAction")]
         public JsonResponse Get()
         {
             var json =_dbPagos.Get();
@@ -39,17 +41,20 @@ namespace Prestame.Controllers
 
         // GET: api/Pagos/5
         [ResponseType(typeof(JsonResponse))]
+        [ActionName("DefaultAction")]
         public JsonResponse Get(int id)
         {
             var json = _dbPagos.Get(id);
             return json;
         }
 
-        // GET: api/Pagos/5
+        // GET: api/Pagos/GetPagosByCliente/5
         [ResponseType(typeof(JsonResponse))]
-        public JsonResponse GetPagos(int idClient)
+        [ActionName("GetPagosByCliente")]
+
+        public JsonResponse GetPagosByCliente(int id)
         {
-            var json = _dbPagos.GetClientPagos(idClient);
+            var json = _dbPagos.GetPagosByCliente(id);
             return json;
         }
 

@@ -4,7 +4,8 @@ using Prestame.Interfaces;
 using Prestame.Data;
 using System.Web.Http.ModelBinding;
 using Prestame.Models;
-using static Prestame.Models.Estados;
+using System.Data.Entity;
+
 
 namespace Prestame.Repositories
 {
@@ -55,7 +56,7 @@ namespace Prestame.Repositories
                                       InteresInicial = prestamo.InteresInicial,
                                       FechaDeCreacion = prestamo.FechaDeCreacion,
                                       FechaDeSaldo = prestamo.FechaDeSaldo,
-                                      EstadoPrestamo = EnumHelper.GetEnumDescription((EstadosPrestamos)prestamo.Estado)
+                                      EstadoPrestamo = EnumHelper.GetEnumDescription((Estados.EstadosPrestamos)prestamo.Estado)
                                   }).ToList();
 
                 var message = (prestamos.Count > 0 ? null : "No existen prestamos registrados.");
@@ -93,6 +94,42 @@ namespace Prestame.Repositories
             return json;
         }
 
+        public JsonResponse GetPrestamosByClient(int Id)
+        {
+
+            try
+            {
+                var prestamos = _db.Prestamos.Where(p => p.ClienteId == Id)
+                                .AsEnumerable().Select(prestamo => new PrestamoViewModel()
+                                {
+                                    Id = prestamo.Id,
+                                    EstadoPrestamo = EnumHelper.GetEnumDescription((Estados.EstadosPrestamos)prestamo.Estado),
+                                    CapitalActual = prestamo.CapitalActual,
+                                    CapitalInicial = prestamo.CapitalInicial,
+                                    InteresActual = prestamo.InteresActual,
+                                    InteresInicial = prestamo.InteresInicial,
+                                    FechaDeCreacion = prestamo.FechaDeCreacion,
+                                    FechaDeSaldo = prestamo.FechaDeSaldo
+                                }).ToList();
+
+                if (prestamos != null)
+                {
+                    json.setMessage(prestamos, JsonResponse.MessageType.Success);
+
+                }
+                else
+                {
+                    json.setMessage(new object(), JsonResponse.MessageType.Error, "El cliente no posee prestamos.");
+                }
+            }
+            catch (Exception ex)
+            {
+                PrestameExceptions.HandleException(ex, json);
+            }
+
+            return json;
+        }
+
         public JsonResponse Save(PrestamoViewModel prestamoViewModel, ModelStateDictionary ModelState)
         {
             try
@@ -107,7 +144,7 @@ namespace Prestame.Repositories
                         InteresInicial = prestamoViewModel.InteresInicial,
                         FechaDeCreacion = DateTime.Now,
                         ClienteId = prestamoViewModel.ClienteId,
-                        Estado = (int)EstadosPrestamos.AlDía
+                        Estado = (int)Estados.EstadosPrestamos.AlDía
                     };
 
                     _db.Prestamos.Add(prestamo);
@@ -143,7 +180,7 @@ namespace Prestame.Repositories
                         var prestamo = new PrestamoViewModel()
                         {
                             Id = _prestamo.Id,
-                            EstadoPrestamo = EnumHelper.GetEnumDescription((EstadosPrestamos)_prestamo.Estado)
+                            EstadoPrestamo = EnumHelper.GetEnumDescription((Estados.EstadosPrestamos)_prestamo.Estado)
                         };
 
                         json.setMessage(prestamo, JsonResponse.MessageType.Success);

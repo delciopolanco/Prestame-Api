@@ -6,6 +6,7 @@ using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using System.Net.Http.Formatting;
+using System.Web.Http.Routing;
 
 namespace Prestame
 {
@@ -19,10 +20,11 @@ namespace Prestame
             // config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 
             // Web API configuration and services
-           /* config.Formatters.OfType<JsonMediaTypeFormatter>()
-                       .First()
-                       .SerializerSettings
-                       .ContractResolver = new CamelCasePropertyNamesContractResolver();*/
+            /* config.Formatters.OfType<JsonMediaTypeFormatter>()
+                        .First()
+                        .SerializerSettings
+                        .ContractResolver = new CamelCasePropertyNamesContractResolver();*/
+
 
             // Web API routes
             config.MapHttpAttributeRoutes();
@@ -30,6 +32,12 @@ namespace Prestame
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
+                defaults: new { action = "DefaultAction", id = RouteParameter.Optional }
+            );
+
+            config.Routes.MapHttpRoute(
+                name: "DefaultApiWithAction",
+                routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
         }

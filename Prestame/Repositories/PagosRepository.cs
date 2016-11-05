@@ -86,7 +86,7 @@ namespace Prestame.Repositories
             return json;
         }
 
-        public JsonResponse GetClientPagos(int idClient)
+        public JsonResponse GetPagosByCliente(int idClient)
         {
 
             try

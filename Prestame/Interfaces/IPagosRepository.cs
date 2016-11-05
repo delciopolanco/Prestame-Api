@@ -13,7 +13,7 @@ namespace Prestame.Interfaces
 
         JsonResponse Save(T entity, ModelStateDictionary ModelState);
 
-        JsonResponse GetClientPagos(int idClient);
+        JsonResponse GetPagosByCliente(int idClient);
 
         void Dispose();
     }
