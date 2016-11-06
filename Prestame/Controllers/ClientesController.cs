@@ -29,6 +29,7 @@ namespace Prestame.Controllers.Clientes
         /// </summary>
         /// <returns>JsonResponse</returns>
         [ResponseType(typeof(JsonResponse))]
+        [ActionName("DefaultAction")]
         public IHttpActionResult Get()
         {
             return Ok(_clientDB.Get());
@@ -36,6 +37,7 @@ namespace Prestame.Controllers.Clientes
 
         // GET: api/Clientes/5
         [ResponseType(typeof(JsonResponse))]
+        [ActionName("DefaultAction")]
         public IHttpActionResult GetById(int id)
         {
             var json = _clientDB.Get(id);
@@ -44,6 +46,7 @@ namespace Prestame.Controllers.Clientes
 
         // POST: api/Clientes
         [ResponseType(typeof(JsonResponse))]
+        [ActionName("DefaultAction")]
         [HttpPost]
         public IHttpActionResult Post(ClienteViewModel cliente)
         {
@@ -54,6 +57,7 @@ namespace Prestame.Controllers.Clientes
 
         // PUT: api/Clientes/5
         [ResponseType(typeof(JsonResponse))]
+        [ActionName("DefaultAction")]
         public IHttpActionResult Put(int id, ClienteViewModel cliente)
         {
 
@@ -63,6 +67,7 @@ namespace Prestame.Controllers.Clientes
 
         // DELETE: api/Clientes/5
         [ResponseType(typeof(JsonResponse))]
+        [ActionName("DefaultAction")]
         public IHttpActionResult Delete(int id)
         {
            var json = _clientDB.Delete(id);

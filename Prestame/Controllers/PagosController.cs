@@ -60,6 +60,7 @@ namespace Prestame.Controllers
 
         // POST: api/Pagos
         [ResponseType(typeof(JsonResponse))]
+        [ActionName("DefaultAction")]
         public JsonResponse PostPagos(PagosViewModel pago)
         {
             var json = _dbPagos.Save(pago, ModelState);

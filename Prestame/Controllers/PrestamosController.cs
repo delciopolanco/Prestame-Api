@@ -49,6 +49,7 @@ namespace Prestame.Controllers
 
         // POST: api/Prestamos
         [ResponseType(typeof(JsonResponse))]
+        [ActionName("DefaultAction")]
         [HttpPost]
         public IHttpActionResult Post(PrestamoViewModel prestamo)
         {
@@ -58,6 +59,7 @@ namespace Prestame.Controllers
 
         // PUT: api/Prestamos
         [ResponseType(typeof(JsonResponse))]
+        [ActionName("DefaultAction")]
         public IHttpActionResult Put(int id, PrestamosEstadosViewModel estado)
         {
             var json = _prestamosDB.Update(id, estado);
